@@ -37,11 +37,11 @@ module.exports = class Member {
 		return db.execute(`
 			UPDATE Members
 			SET MemberName = ?,
-				RoleBand = ?,
-				BirthDate = ?,
-				BirthCountry = ?,
-				Awards = ?,
-				BandId = ?
+			RoleBand = ?,
+			BirthDate = ?,
+			BirthCountry = ?,
+			Awards = ?,
+			BandId = ?
 			WHERE Members.id = ?
 			`,
 		[
