@@ -7,10 +7,10 @@ module.exports = class Album {
 		this.ReleaseDate = ReleaseDate;
 		this.SongsNumber = SongsNumber;
 		this.Copies = Copies;
-    this.AlbumPhoto = AlbumPhoto;
-    this.BandId = BandId;
-    this.SongsTitle = SongsTitle;
-    this.Awards = Awards;
+		this.AlbumPhoto = AlbumPhoto;
+		this.BandId = BandId;
+		this.SongsTitle = SongsTitle;
+		this.Awards = Awards;
 	}
 
 	save() {

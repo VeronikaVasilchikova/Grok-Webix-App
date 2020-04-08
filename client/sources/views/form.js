@@ -79,13 +79,8 @@ export default class BandFormView extends JetView {
 					accept: "image/jpeg, image/png",
 					upload: "http://localhost:3000/bands/upload",
 					on: {
-						onBeforeFileAdd: (file) => {
-							this.fileName = file.name;
-							this.fileSize = Math.round(file.size / 1000);
-						},
-						onFileUploadError: () => {
-							webix.alert("Error during file uploads");
-						}
+						onBeforeFileAdd: file => this.beforeFileAdd(file),
+						onFileUploadError: () => this.fileUploadError()
 					}
 				},
 				{
@@ -116,15 +111,7 @@ export default class BandFormView extends JetView {
 					checkValue: "Checked",
 					uncheckValue: "Unchecked",
 					on: {
-						onChange(value) {
-							const additional = this.$scope.$$("additionalInfo");
-							if (value === "Checked") {
-								additional.hide();
-							}
-							else {
-								additional.show();
-							}
-						}
+						onChange: value => this.showOrHideAdditionalInfo(value)
 					}
 
 				}
@@ -143,9 +130,7 @@ export default class BandFormView extends JetView {
 					value: "Add Band",
 					type: "form",
 					width: 200,
-					click: () => {
-						this.onSubmit();
-					}
+					click: () => this.onSubmit()
 				},
 				{
 					view: "button",
@@ -153,9 +138,7 @@ export default class BandFormView extends JetView {
 					value: "Clear",
 					type: "form",
 					width: 200,
-					click: () => {
-						this.clearForm();
-					}
+					click: () => this.clearForm()
 				}
 			],
 			x: 1,
@@ -202,6 +185,25 @@ export default class BandFormView extends JetView {
 
 	init() {
 		this.form = this.$$("form");
+	}
+
+	beforeFileAdd(file) {
+		this.fileName = file.name;
+		this.fileSize = Math.round(file.size / 1000);
+	}
+
+	fileUploadError() {
+		webix.alert("Error during file uploads");
+	}
+
+	showOrHideAdditionalInfo(value) {
+		const additional = this.$$("additionalInfo");
+		if (value === "Checked") {
+			additional.hide();
+		}
+		else {
+			additional.show();
+		}
 	}
 
 	onSubmit() {

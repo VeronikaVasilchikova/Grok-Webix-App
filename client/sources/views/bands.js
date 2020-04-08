@@ -24,28 +24,13 @@ export default class BandsView extends JetView {
 											view: "button",
 											value: "Export to Excel",
 											localId: "btnToExcel",
-											click: () => {
-												webix.toExcel(this.table, {
-													filename: "bands_data",
-													name: "Bands",
-													columns: {
-														BandName: {header: "Band Name", width: 200},
-														MusicStyle: {header: "Music Style", width: 100},
-														CompositionSet: {header: "Composition (set)", width: 300},
-														CreationDate: {header: "Creation Date", width: 100},
-														CountryFoundation: {header: "Country of Foundation", width: 100}
-													}
-												});
-											}
+											click: () => this.convertToExcel()
 										},
 										{
 											view: "button",
 											value: "Refresh",
 											localId: "btnRefresh",
-											click: () => {
-												this.table.clearAll();
-												this.table.load("http://localhost:3000/bands/");
-											}
+											click: () => this.doRefresh()
 										}
 									]
 								},
@@ -106,6 +91,25 @@ export default class BandsView extends JetView {
 		this.table = this.$$("tableBand");
 		this.table.sync(bands);
 		this.jetPopupForm = this.ui(PopupFormView);
+	}
+
+	convertToExcel() {
+		webix.toExcel(this.table, {
+			filename: "bands_data",
+			name: "Bands",
+			columns: {
+				BandName: {header: "Band Name", width: 200},
+				MusicStyle: {header: "Music Style", width: 100},
+				CompositionSet: {header: "Composition (set)", width: 300},
+				CreationDate: {header: "Creation Date", width: 100},
+				CountryFoundation: {header: "Country of Foundation", width: 100}
+			}
+		});
+	}
+
+	doRefresh() {
+		this.table.clearAll();
+		this.table.load("http://localhost:3000/bands/");
 	}
 
 	editInformation(id) {

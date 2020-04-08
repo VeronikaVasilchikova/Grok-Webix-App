@@ -55,28 +55,10 @@ export default class DetailsView extends JetView {
 						}
 					],
 					onClick: {
-						"wxi-trash": (e, id) => {
-							webix.confirm({
-								title: "Remove this note",
-								ok: "Yes",
-								cancel: "No",
-								text: "Are you sure you want to remove this note?"
-							}).then(() => webix.confirm({
-								title: "Warning!",
-								type: "confirm-warning",
-								text: "You are about to agree. Are you sure?"
-							})).then(() => {
-								albums.remove(id);
-							});
-							return false;
-						}
+						"wxi-trash": (e, id) => this.removeAlbum(id)
 					},
 					on: {
-						onItemDblClick: (id) => {
-							let values = this.$$("tableDetails").getItem(id);
-							this.$$("additionalInfo").show();
-							this.$$("additionalInfo").setValues(values);
-						}
+						onItemDblClick: id => this.showAdditionalInfo(id)
 					}
 				},
 				{
@@ -96,9 +78,7 @@ export default class DetailsView extends JetView {
 						<button class="close">Close</button>
 					`,
 					onClick: {
-						close: () => {
-							this.$$("additionalInfo").hide();
-						}
+						close: () => this.hideAdditionalInfo()
 					}
 				}
 			]
@@ -129,5 +109,31 @@ export default class DetailsView extends JetView {
 			}
 		});
 		this.$$("additionalInfo").hide();
+	}
+
+	removeAlbum(id) {
+		webix.confirm({
+			title: "Remove this note",
+			ok: "Yes",
+			cancel: "No",
+			text: "Are you sure you want to remove this note?"
+		}).then(() => webix.confirm({
+			title: "Warning!",
+			type: "confirm-warning",
+			text: "You are about to agree. Are you sure?"
+		})).then(() => {
+			albums.remove(id);
+		});
+		return false;
+	}
+
+	hideAdditionalInfo() {
+		this.$$("additionalInfo").hide();
+	}
+
+	showAdditionalInfo(id) {
+		let values = this.$$("tableDetails").getItem(id);
+		this.$$("additionalInfo").show();
+		this.$$("additionalInfo").setValues(values);
 	}
 }

@@ -21,7 +21,8 @@ exports.getAll = (req, res, next) => {
 			});
 		})
 		.catch(error => {
-			console.log(error);
+			res.status(500);
+			res.send("Internal Server Error");
 		});
 	}
 	else {
@@ -42,7 +43,8 @@ exports.getAll = (req, res, next) => {
 			});
 		})
 		.catch(error => {
-			console.log(error);
+			res.status(500);
+			res.send("Internal Server Error");
 		});
 	}
 };
@@ -54,7 +56,8 @@ exports.getOne = (req, res, next) => {
 			res.send(member[0]);
 		})
 		.catch(error => {
-			console.log(error);
+			res.status(500);
+			res.send("Internal Server Error");
 		});
 };
 
@@ -74,7 +77,15 @@ exports.add = (req, res, next) => {
 		Awards,
 		BandId
 	);
-	member.save();
+	member.save()
+		.then(([rows, fieldData]) => {
+			res.status(201);
+			res.send(rows);
+		})
+		.catch((error) => {
+			res.status(500);
+			res.send("Internal Server Error");
+		});
 };
 
 exports.update = (req, res, next) => {
@@ -84,7 +95,7 @@ exports.update = (req, res, next) => {
 	const BirthDate = req.body.BirthDate || "";
 	const BirthCountry = req.body.BirthCountry || "";
 	const Awards = req.body.Awards || "";
-	const BandId = req.body.BandId || "";
+	const BandId = req.body.BandId;
   const member = new Member(
 		id,
 		MemberName,
@@ -94,10 +105,25 @@ exports.update = (req, res, next) => {
 		Awards,
 		BandId
 	);
-  member.update(id);
+	member.update(id)
+		.then(([rows, fieldData]) => {
+			res.send(rows);
+		})
+		.catch((error) => {
+			console.log(error);
+			res.status(500);
+			res.send("Internal Server Error");
+		});
 };
 
 exports.delete = (req, res, next) => {
-  const memberId = req.params.id;
-  Member.deleteById(memberId);
+	const memberId = req.params.id;
+	Member.deleteById(memberId)
+		.then(([rows, fieldData]) => {
+			res.send(rows);
+		})
+		.catch((error) => {
+			res.status(500);
+			res.send("Internal Server Error");
+		});
 };

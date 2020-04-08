@@ -6,7 +6,8 @@ exports.getAll = (req, res, next) => {
 			res.send(rows);
 		})
 		.catch(error => {
-			console.log(error);
+			res.status(500);
+			res.send("Internal Server Error");
 		});
 };
 
@@ -17,7 +18,8 @@ exports.getOne = (req, res, next) => {
 			res.send(band[0]);
 		})
 		.catch(error => {
-			console.log(error);
+			res.status(500);
+			res.send("Internal Server Error");
 		});
 };
 
@@ -28,7 +30,7 @@ exports.add = (req, res, next) => {
 	const CreationDate = req.body.CreationDate || "";
 	const CountryFoundation = req.body.CountryFoundation || "";
 	const FileName = req.body.FileName || "";
-  const band = new Band(
+	const band = new Band(
 		null,
 		BandName,
 		MusicStyle,
@@ -37,7 +39,15 @@ exports.add = (req, res, next) => {
 		CountryFoundation,
 		FileName
 	);
-  band.save();
+	band.save()
+		.then(([rows, fieldData]) => {
+			res.status(201);
+			res.send(rows);
+		})
+		.catch((error) => {
+			res.status(500);
+			res.send("Internal Server Error");
+		});
 };
 
 exports.update = (req, res, next) => {
@@ -48,7 +58,7 @@ exports.update = (req, res, next) => {
 	const CreationDate = req.body.CreationDate || "";
 	const CountryFoundation = req.body.CountryFoundation || "";
 	const FileName = req.body.FileName || "";
-  const band = new Band(
+	const band = new Band(
 		id,
 		BandName,
 		MusicStyle,
@@ -57,21 +67,33 @@ exports.update = (req, res, next) => {
 		CountryFoundation,
 		FileName
 	);
-  band.update(id);
+	band.update(id)
+		.then(([rows, fieldData]) => {
+			res.send(rows);
+		})
+		.catch((error) => {
+			res.status(500);
+			res.send("Internal Server Error");
+		});
 };
 
 exports.delete = (req, res, next) => {
-  const bandId = req.params.id;
-  Band.deleteById(bandId);
+	const bandId = req.params.id;
+	Band.deleteById(bandId)
+		.then(([rows, fieldData]) => {
+			res.send(rows);
+		})
+		.catch((error) => {
+			res.status(500);
+			res.send("Internal Server Error");
+		});
 };
 
 exports.upload = (req, res, next) => {
 	if (!req.files) {
 		return res.status(400).send('No files were uploaded.');
 	}
-
 	const file = req.files.upload;
-
 	if (file.mimetype == "image/jpeg" || file.mimetype == "image/png" || file.mimetype == "image/gif" ) {
 		file.mv('files/' + file.name, (err) => {
 			if (err) {
