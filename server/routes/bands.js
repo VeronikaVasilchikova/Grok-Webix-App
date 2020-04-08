@@ -1,7 +1,6 @@
 const express = require('express');
 const bandsController = require("../controllers/bandsController");
 const router = express.Router();
-
 router.get("", bandsController.getAll);
 router.get("/:id", bandsController.getOne);
 router.delete("/:id", bandsController.delete);

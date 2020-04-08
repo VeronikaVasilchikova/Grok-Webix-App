@@ -37,11 +37,11 @@ module.exports = class Band {
 		return db.execute(`
 			UPDATE Bands
 			SET BandName = ?,
-				MusicStyle = ?,
-				CompositionSet = ?,
-				CreationDate = ?,
-				CountryFoundation = ?,
-				FileName = ?
+			MusicStyle = ?,
+			CompositionSet = ?,
+			CreationDate = ?,
+			CountryFoundation = ?,
+			FileName = ?
 			WHERE Bands.id = ?
 			`,
 		[
