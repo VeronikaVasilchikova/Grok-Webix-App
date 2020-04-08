@@ -96,7 +96,7 @@ exports.update = (req, res, next) => {
 	const BirthCountry = req.body.BirthCountry || "";
 	const Awards = req.body.Awards || "";
 	const BandId = req.body.BandId;
-  const member = new Member(
+  	const member = new Member(
 		id,
 		MemberName,
 		RoleBand,
